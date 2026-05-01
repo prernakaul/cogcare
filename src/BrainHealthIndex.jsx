@@ -382,14 +382,7 @@ function BHIReport({
   const signInQuizUrl = `/login?from=quiz&quizFlow=existing&returnTo=${returnToEnc}&prefillEmail=${encEmail}`
 
   const handleConsultClick = () => {
-    if (authIdentity === 'signedIn') {
-      onClose?.()
-      navigate('/dashboard/consultations/book')
-      return
-    }
-    setConsultEmailHint(
-      'To book a consultation, enter your email below. We will send a secure sign-in link. The email includes buttons to open your dashboard and the inline scheduler after you sign in.',
-    )
+    window.open('https://calendly.com/cogcare/30min', '_blank', 'noopener,noreferrer')
   }
 
   return (
