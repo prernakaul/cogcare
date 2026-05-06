@@ -129,17 +129,19 @@ export default async function handler(req, res) {
   const brevo = getBrevoConfig()
   const ses = getSesConfig()
 
-  if (provider === 'ses') {
-    if (!ses.ok) {
-      return res.status(503).json({
-        error: 'Email service is not configured',
-        detail: 'Set MAIL_PROVIDER=ses with AWS_REGION and SES_FROM_EMAIL (verified in SES).',
-      })
+  const providerReady = provider === 'ses' ? ses.ok : brevo.ok
+  if (!providerReady) {
+    if (process.env.NODE_ENV !== 'production') {
+      // Dev mock: no credentials configured, return success so the UI flow is testable
+      console.warn('[send-quiz-email] No email provider configured — returning mock success (dev only).')
+      return res.status(200).json({ ok: true, mock: true, scenario: 'new_user' })
     }
-  } else if (!brevo.ok) {
     return res.status(503).json({
       error: 'Email service is not configured',
-      detail: 'Set BREVO_API_KEY and BREVO_SENDER_EMAIL, or switch to MAIL_PROVIDER=ses with SES settings.',
+      detail:
+        provider === 'ses'
+          ? 'Set MAIL_PROVIDER=ses with AWS_REGION and SES_FROM_EMAIL (verified in SES).'
+          : 'Set BREVO_API_KEY and BREVO_SENDER_EMAIL, or switch to MAIL_PROVIDER=ses with SES settings.',
     })
   }
 

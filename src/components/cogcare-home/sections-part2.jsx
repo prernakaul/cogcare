@@ -124,7 +124,7 @@ function Science() {
           <BodyLead style={{ marginBottom: 24 }}>
             The Brain Health Index draws on informant-based instruments (CDR, AD8, IQCODE) that have been validated across hundreds of thousands of patients. We translate their structure into questions caregivers can answer in plain language — without diluting the clinical signal.
           </BodyLead>
-          <BtnGhost>Read our methodology paper <Ico.arrowRight size={12} /></BtnGhost>
+          <BtnGhost style={{ opacity: 0.5, cursor: 'default', pointerEvents: 'none' }}>Methodology paper coming soon</BtnGhost>
         </div>
 
         <div>
@@ -141,7 +141,7 @@ function Science() {
                 padding: '18px 0',
                 borderTop: i === 0 ? '1px solid var(--color-sand)' : 'none',
                 borderBottom: '1px solid var(--color-sand)',
-                display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 16, alignItems: 'baseline'
+                display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 16, alignItems: 'baseline'
               }}>
                 <span style={{
                   fontFamily: "'Playfair Display', Georgia, serif",
@@ -156,7 +156,6 @@ function Science() {
                     {p.authors} · <em>{p.journal}</em> · {p.year}
                   </div>
                 </div>
-                <Ico.arrowRight size={12} color="var(--color-text-tertiary)" />
               </div>
             ))}
           </div>
@@ -203,12 +202,12 @@ function Mission() {
             "We started CogCare because the families who notice first deserve better than a 10-minute rushed appointment, a follow-up scheduled six weeks out, and the feeling that their instincts don't count as evidence."
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 28 }}>
-            <div style={{ width: 48, height: 48, borderRadius: '50%', overflow: 'hidden' }}>
-              <PortraitPlaceholder seed={1} style={{ minHeight: 48, borderRadius: '50%' }} />
+            <div style={{ width: 48, height: 48, borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+              <img src="https://bri.ucla.edu/wp-content/uploads/2025/03/Nasir_I_Photo.jpg" alt="Dr. Imaad Nasir, M.D." style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
             </div>
             <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--color-forest)' }}>Dr. Nasir Ahmad, MD</div>
-              <div style={{ fontSize: 12, color: 'var(--color-text-tertiary)' }}>Founder & Chief Medical Officer</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--color-forest)' }}>Dr. Imaad Nasir, M.D.</div>
+              <div style={{ fontSize: 12, color: 'var(--color-text-tertiary)' }}>Neurology · UCLA Brain Research Institute</div>
             </div>
           </div>
 
@@ -248,9 +247,9 @@ function FAQ() {
   const [open, setOpen] = useState(0);
   const qs = [
     { q: 'Is the Brain Health Index a diagnosis?', a: 'No. It is a structured screening tool — a clinical-grade first step that gives you and a specialist a shared starting point. Only a licensed clinician can diagnose a cognitive condition, and the Index is designed specifically to route you to one when appropriate.' },
-    { q: 'How long does the Index take?', a: 'About 8 minutes. It\'s 25 questions about behaviors you\'ve observed in your loved one — memory lapses, conversation patterns, mood changes, orientation. We intentionally keep it short so caregivers actually finish it.' },
+    { q: 'How long does the Index take?', a: 'About 5 minutes. It\'s a short set of questions about behaviors you\'ve observed in your loved one — memory lapses, conversation patterns, mood changes, orientation. We intentionally keep it brief so caregivers actually finish it.' },
     { q: 'Who sees my results?', a: 'You do. Results are saved only when you explicitly email them to yourself. If you book a consult, you choose which specialist sees the report. We never sell or share data. Ever.' },
-    { q: 'What does a specialist consult cost?', a: 'Consults are billed through your insurance in most cases. The Index itself is always free. CogCare is a 501(c)(3) nonprofit — we never charge caregivers to take the screening.' },
+    { q: 'What does a specialist consult cost?', a: 'Consults are cash pay only — we do not bill insurance. The Index itself is always free. CogCare is a 501(c)(3) nonprofit — we never charge caregivers to take the screening.' },
     { q: 'Can I take the Index about myself?', a: 'Yes. About 30% of our users take it about their own cognition. The question framing adapts. But if you\'re worried about a loved one, the informant-based path is more clinically validated.' },
     { q: 'What if the results are alarming?', a: 'We never leave you without a next step. Every elevated or moderate result is paired with a concrete pathway — which specialist to talk to, what to say, how to prepare. And our care team can help you navigate scheduling.' },
   ];

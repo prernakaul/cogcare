@@ -102,7 +102,6 @@ export function useDashboardData() {
       const ownerSub = attrs.sub || ''
       setSub(ownerSub)
       setEmail(attrs.email || attrs.preferred_username || '')
-      const ownerSub = attrs.sub || ''
       const { data: profiles } = await client.models.UserProfile.list({ limit: 1 })
       setProfile(profiles?.[0] ?? null)
       let assess = await listAllAssessments()
@@ -143,7 +142,7 @@ export function useDashboardData() {
       setSubjects(subjList.filter((s) => !s.archivedAt))
       const { data: cons } = await client.models.Consultant.list()
       setConsultants(cons ?? [])
-      const appts = await listConsultAppointmentsForOwner(ownerSub)
+      appts = await listConsultAppointmentsForOwner(ownerSub)
       setConsultAppointments(appts)
     } catch (err) {
       const msg =

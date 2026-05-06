@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, Link } from 'react-router-dom'
+
+const BASE = (import.meta.env.BASE_URL || '/').replace(/\/$/, '')
 import BrainHealthIndex from '../BrainHealthIndex'
 import { useAuthIdentity } from '../lib/useAuthIdentity'
 import CogcareHome from '../components/cogcare-home/CogcareHome.jsx'
-import { X, ArrowRight, Brain } from 'lucide-react'
+import { X, ArrowRight, ArrowUpRight, Brain, Sparkles } from 'lucide-react'
 
 export default function HomePage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -12,6 +14,46 @@ export default function HomePage() {
   const [showIntro, setShowIntro] = useState(false)
   const [quizAnswers, setQuizAnswers] = useState({})
   const [quizResults, setQuizResults] = useState(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [selectedCard, setSelectedCard] = useState(null)
+  const closeBtnRef = useRef(null)
+
+  const cards = [
+    {
+      id: 'assessment',
+      category: 'Assessment',
+      title: 'Know Your Brain Health Score',
+      image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80',
+      content: 'The Brain Health Index is a clinically grounded, 5-minute screening tool developed by physicians from UCLA, Mayo Clinic, and Harvard. It evaluates memory, processing speed, and executive function across 12 validated domains.',
+    },
+    {
+      id: 'prevention',
+      category: 'Prevention',
+      title: 'Modify What Can Be Modified',
+      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
+      content: 'Forty percent of dementia risk is attributable to modifiable lifestyle factors. Sleep quality, cardiovascular fitness, social engagement, and diet each play measurable roles. CogCare translates research into daily, actionable rituals.',
+    },
+    {
+      id: 'specialists',
+      category: 'Specialists',
+      title: 'First-Priority Access to Leading Physicians',
+      image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80',
+      content: 'Our network of neurologists and geriatric psychiatrists trained at the nation\'s top institutions. CogCare members receive priority scheduling — often within days — with specialists whose waitlists typically run months.',
+    },
+    {
+      id: 'education',
+      category: 'Education',
+      title: 'Science Made Accessible',
+      image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80',
+      content: 'From the latest Lancet Commission findings to practical caregiver guides, our education portal translates cutting-edge neuroscience into language every family can act on. No medical training required.',
+    },
+  ]
+
+  useEffect(() => {
+    const h = () => setIsScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', h, { passive: true })
+    return () => window.removeEventListener('scroll', h)
+  }, [])
   const handleCloseQuiz = useCallback(() => setShowQuiz(false), [])
   const closeIntroRef = useRef(null)
 

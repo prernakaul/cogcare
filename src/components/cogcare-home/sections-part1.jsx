@@ -138,19 +138,19 @@ function Nav({ onPrimaryCta, authIdentity }) {
 function Hero({ tone, audience, headlineCopy, onPrimaryCta, onLearnHow }) {
   const copy = {
     warm: {
-      eyebrow: 'Brain Health Index · 8 minutes',
-      headline: <>You noticed something.<br /><em>That instinct deserves to be taken seriously.</em></>,
+      eyebrow: 'Brain Health Index · 5 minutes',
+      headline: <>You noticed something.<br /><em>That instinct<br />deserves to be taken seriously.</em></>,
       sub: "A warm, confidential assessment that turns what you've observed about a loved one into a clear next step — reviewed by cognitive specialists."
     },
     clinical: {
-      eyebrow: 'Clinically validated · 8-minute screening',
+      eyebrow: 'Clinically validated · 5-minute screening',
       headline: <>Early signs matter. <em>We help you read them.</em></>,
       sub: "The Brain Health Index is a structured screening tool that translates observed behaviors into domain-level cognitive indicators, reviewed by board-certified specialists."
     },
     urgent: {
       eyebrow: 'The window matters',
       headline: <>The first two years are the ones that count. <em>Don't wait.</em></>,
-      sub: "Most caregivers notice signs 1–2 years before diagnosis. Early action opens every door — from reversible causes to disease-modifying therapies. Start in 8 minutes."
+      sub: "Most caregivers notice signs 1–2 years before diagnosis. Early action opens every door — from reversible causes to disease-modifying therapies. Start in 5 minutes."
     }
   };
   const c = copy[tone] || copy.warm;
@@ -252,8 +252,8 @@ function Hero({ tone, audience, headlineCopy, onPrimaryCta, onLearnHow }) {
             border: 'clamp(8px, 1.5vw, 16px) solid white',
           }}>
             <img
-              src="/hero-home.png"
-              alt="Adult and older adult family members seated together in a warm home setting, hands clasped"
+              src="https://images.unsplash.com/photo-1694009514875-025cd00ed625?w=900&q=80"
+              alt="Older and younger woman holding hands, a warm moment of care and connection"
               width={900}
               height={1125}
               decoding="async"
@@ -335,7 +335,7 @@ function HowItWorks() {
       n: '01',
       title: 'Tell us what you\'ve noticed',
       desc: 'Eight minutes of gentle questions about memory, language, attention, and behavior — drawn directly from validated clinical screening tools.',
-      detail: '25 questions · No medical jargon'
+      detail: 'No medical jargon'
     },
     {
       n: '02',
@@ -400,9 +400,6 @@ function HowItWorks() {
                   letterSpacing: '0.08em'
                 }}>{s.detail}</span>
               </div>
-              <div style={{ alignSelf: 'center', color: 'var(--color-forest)', opacity: 0.3 }}>
-                <Ico.arrowRight size={18} />
-              </div>
             </div>
           ))}
         </div>
@@ -462,7 +459,7 @@ function TheIndex({ onPrimaryCta }) {
         </div>
 
         {/* Right: domain cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14 }}>
           {domains.map((d, i) => (
             <div key={d.key} style={{
               padding: '24px 22px',
@@ -520,7 +517,7 @@ function WhyEarly() {
           marginBottom: 20,
           textWrap: 'balance'
         }}>
-          The earlier you look,<br/>the more you can do.
+          The earlier you detect,<br/>the more you can do.
         </h2>
         <p style={{
           fontSize: 17, color: 'rgba(255,255,255,0.7)',
@@ -580,29 +577,40 @@ function WhyEarly() {
 
 function Specialists() {
   const docs = [
-    { name: 'Dr. Priya Sharma, MD', role: 'Cognitive Neurology', inst: 'Formerly UCLA Medical Center', seed: 0 },
-    { name: 'Dr. Marcus Webb, MD', role: 'Geriatric Psychiatry', inst: 'Mayo Clinic affiliate', seed: 1 },
-    { name: 'Dr. Elena Ruiz, MD, PhD', role: 'Preventive Neurology', inst: 'Penn Medicine', seed: 2 },
-    { name: 'Dr. James Chen, MD', role: 'Behavioral Neurology', inst: 'Johns Hopkins affiliate', seed: 3 },
+    {
+      name: 'Dr. Imaad Nasir, M.D.',
+      role: 'Neurology',
+      inst: 'UCLA Brain Research Institute',
+      bio: 'Assistant Clinical Professor at UCLA\'s David Geffen School of Medicine. Specialises in cognitive neurology and brain health across the lifespan.',
+      photo: 'https://bri.ucla.edu/wp-content/uploads/2025/03/Nasir_I_Photo.jpg',
+    },
+    {
+      name: 'Dr. Nidhi Goel, MD',
+      role: 'Psychiatry',
+      inst: 'Healmed Solutions',
+      bio: 'Board-certified psychiatrist and founder of Healmed Solutions. Focuses on optimising mental health care delivery and reducing barriers to specialist access.',
+      photo: 'https://healmedsolutions.com/wp-content/uploads/2023/07/Doctor-Nidhi-Founder-Healmed-Solutions-300x281-1.jpeg',
+    },
   ];
 
   return (
     <Section id="specialists">
       <div style={{ maxWidth: 720, marginBottom: 56 }}>
-        <SectionLabel>Specialists you'd never get a 45-minute appointment with</SectionLabel>
+        <SectionLabel>White-glove specialist access</SectionLabel>
         <DisplayH2 style={{ marginBottom: 20 }}>
-          The people reviewing your report<br />
-          <em>have actually been in the room.</em>
+          First-priority access to specialists<br />
+          <em>who are typically waitlisted for months.</em>
         </DisplayH2>
         <BodyLead>
-          Every CogCare consultation is led by a board-certified specialist in cognitive or geriatric care — the same clinicians who sit on academic appointments at institutions like UCLA, Mayo, Penn, and Hopkins.
+          Every CogCare consultation is a dedicated, unhurried 45 minutes with a board-certified specialist — no rushed exams, no six-week follow-ups. CogCare members are seen first, with direct scheduling and a specialist who has already reviewed your full Brain Health Index report before you speak.
         </BodyLead>
       </div>
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: 20
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+        gap: 20,
+        maxWidth: 680,
       }}>
         {docs.map((d) => (
           <div key={d.name} style={{
@@ -615,19 +623,19 @@ function Specialists() {
           onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(26,60,52,0.1)'; }}
           onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
           >
-            <div style={{ aspectRatio: '4/4.5' }}>
-              <PortraitPlaceholder seed={d.seed} />
+            <div style={{ aspectRatio: '4/3.5', overflow: 'hidden', background: 'var(--color-cream)' }}>
+              <img src={d.photo} alt={d.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
             </div>
             <div style={{ padding: '20px 22px' }}>
               <h4 style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
                 fontSize: 17, fontWeight: 500,
                 color: 'var(--color-forest)',
-                marginBottom: 6, letterSpacing: '-0.01em',
+                marginBottom: 4, letterSpacing: '-0.01em',
                 lineHeight: 1.25
               }}>{d.name}</h4>
-              <p style={{ fontSize: 12, color: 'var(--color-clay)', fontWeight: 600, marginBottom: 4 }}>{d.role}</p>
-              <p style={{ fontSize: 11.5, color: 'var(--color-text-tertiary)' }}>{d.inst}</p>
+              <p style={{ fontSize: 12, color: 'var(--color-clay)', fontWeight: 600, marginBottom: 4 }}>{d.role} · {d.inst}</p>
+              <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', lineHeight: 1.6, marginTop: 8 }}>{d.bio}</p>
             </div>
           </div>
         ))}

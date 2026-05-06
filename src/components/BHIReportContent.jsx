@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Brain, Calendar, Map, Shield, Download, Mail, Share2, Check, Info, Loader2 } from 'lucide-react'
+import { downloadReportPdf } from '../lib/downloadReportPdf'
 
 const GSI_LEVELS = [
   { short: 'Optimal' },
@@ -212,6 +213,7 @@ export default function BHIReportContent({
   emailStatus, emailMessage,
   onSendEmail, canEmail,
   onResetEmail,
+  onSendGuideEmail,
   /** Quiz/report overlay: sign-in + inline scheduler flow */
   onConsultClick,
   /** Dashboard saved report: deep-link to booking with query params */
@@ -223,6 +225,9 @@ export default function BHIReportContent({
   const [showGuideForm, setShowGuideForm] = useState(false)
   const [guideEmail, setGuideEmail] = useState('')
   const [guideSent, setGuideSent] = useState(false)
+  const [guideError, setGuideError] = useState('')
+  const [guideSending, setGuideSending] = useState(false)
+  const [pdfBusy, setPdfBusy] = useState(false)
 
   useEffect(() => {
     if (!consultEmailHint) return
@@ -256,6 +261,24 @@ export default function BHIReportContent({
     setTimeout(() => {
       document.getElementById('bhi-share-email-input')?.focus()
     }, 50)
+  }
+
+  const handleSendGuide = async () => {
+    const trimmed = guideEmail.trim()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setGuideError('Please enter a valid email address.')
+      return
+    }
+    if (!onSendGuideEmail) { setGuideSent(true); return }
+    setGuideSending(true)
+    try {
+      await onSendGuideEmail(trimmed)
+      setGuideSent(true)
+    } catch {
+      setGuideError('Could not send. Please try again.')
+    } finally {
+      setGuideSending(false)
+    }
   }
 
   return (
@@ -515,11 +538,11 @@ export default function BHIReportContent({
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
           {[
-            { label: 'Download PDF', sub: 'Full report', icon: <Download size={15} /> },
-            { label: 'Email to family', sub: 'Share with loved ones', icon: <Mail size={15} /> },
-            { label: 'Send to doctor', sub: 'Share with their GP', icon: <Share2 size={15} /> },
+            { label: pdfBusy ? 'Generating…' : 'Download PDF', sub: 'Full report', icon: pdfBusy ? <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} /> : <Download size={15} />, onClick: async () => { setPdfBusy(true); try { await downloadReportPdf(quizResults, 'BrainHealthIndex-Report') } finally { setPdfBusy(false) } } },
+            { label: 'Email to family', sub: 'Share with loved ones', icon: <Mail size={15} />, onClick: handleShareClick },
+            { label: 'Send to doctor', sub: 'Share with their GP', icon: <Share2 size={15} />, onClick: handleShareClick },
           ].map((btn, i) => (
-            <button key={i} onClick={handleShareClick} style={{
+            <button key={i} onClick={btn.onClick} disabled={i === 0 && pdfBusy} style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               padding: '16px 10px', gap: 6,
               background: 'var(--color-white)', border: '1px solid var(--color-border)', borderRadius: 18,
@@ -616,29 +639,35 @@ export default function BHIReportContent({
         ) : guideSent ? (
           <p style={{ fontSize: 13, color: 'var(--color-forest)', fontWeight: 500, margin: 0 }}>Guide sent! Check your inbox.</p>
         ) : (
+          <>
           <div style={{ display: 'flex', gap: 8 }}>
             <input
               type="email"
               placeholder="your@email.com"
               value={guideEmail}
-              onChange={e => setGuideEmail(e.target.value)}
+              onChange={e => { setGuideEmail(e.target.value); setGuideError('') }}
+              onKeyDown={async e => { if (e.key === 'Enter') await handleSendGuide() }}
               style={{
                 flex: 1, padding: '10px 14px', borderRadius: 10,
-                border: '1px solid var(--color-border)', fontSize: 13, outline: 'none', fontFamily: 'inherit',
+                border: `1px solid ${guideError ? 'var(--color-clay)' : 'var(--color-border)'}`, fontSize: 13, outline: 'none', fontFamily: 'inherit',
               }}
             />
             <button
-              onClick={() => setGuideSent(true)}
+              onClick={handleSendGuide}
+              disabled={guideSending}
               style={{
                 padding: '10px 16px', borderRadius: 10,
                 background: 'var(--color-clay)', color: 'var(--color-white)', border: 'none',
-                fontSize: 11, fontWeight: 700, cursor: 'pointer',
+                fontSize: 11, fontWeight: 700, cursor: guideSending ? 'default' : 'pointer',
                 textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'inherit',
+                opacity: guideSending ? 0.6 : 1,
               }}
             >
-              Send
+              {guideSending ? '…' : 'Send'}
             </button>
           </div>
+          {guideError && <p style={{ margin: '6px 0 0', fontSize: 12, color: 'var(--color-clay)' }}>{guideError}</p>}
+          </>
         )}
       </div>
       </>}

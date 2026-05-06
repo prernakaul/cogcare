@@ -474,6 +474,17 @@ function BHIReport({
           }}
           onConsultClick={handleConsultClick}
           consultEmailHint={consultEmailHint}
+          onSendGuideEmail={async (guideEmailAddr) => {
+            const url = getCompleteAssessmentUrl() || LEGACY_QUIZ_EMAIL_URL
+            if (!url) return
+            await fetch(url, {
+              method: 'POST',
+              mode: 'cors',
+              credentials: 'omit',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({ email: guideEmailAddr, type: 'caregiver_guide' }),
+            })
+          }}
         />
       </div>
 
